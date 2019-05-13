@@ -12,18 +12,6 @@ export default class BaseList extends Record(defaultValues, 'BaseList') {
       ...values,
     });
   }
-
-  static findByKeyValue(items, key, value) {
-    return items.find((item) => {
-      return item.get(`${ key }`) === value ? item : undefined;
-    });
-  }
-
-  static findIndexByKeyValue(items, key, value) {
-    return items.findIndex((item) => {
-      return item.get(`${ key }`) === value ? item : undefined;
-    });
-  }
 }
 
 export const toEntityList = (data, Entity) => {

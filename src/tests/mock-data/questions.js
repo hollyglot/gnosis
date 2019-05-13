@@ -1,3 +1,13 @@
+const questionData = {
+    "id": 2,
+    "question": "Which actor played Richard III in the 1995 British film drama of the same title?",
+    "choices": [
+        "Ian McKellen",
+        "Partrick Stewart",
+        "Elijah Wood"
+    ]
+};
+
 const questionsData = [
     {
         "id": 1,
@@ -28,5 +38,6 @@ const questionsData = [
 ];
 
 export {
+  questionData,
   questionsData
 };
