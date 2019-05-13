@@ -25,6 +25,7 @@
     "window": false
   },
   "rules": {
-    "semi": ["error", "always", { "omitLastInOneLineBlock": true}]
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "semi": ["error", "always", { "omitLastInOneLineBlock": true }]
   }
 }
