@@ -1,4 +1,4 @@
-import { List, Record } from 'immutable';
+import { Record } from 'immutable';
 import uuidv4 from 'uuid/v4';
 
 const defaultValues = {
@@ -11,9 +11,7 @@ const defaultValues = {
 export default class Answer extends Record(defaultValues, 'Answer') {
   constructor(values) {
     super({
-      ...values,
-      choices: values && values.choices ?
-        List(values.choices) : defaultValues.choices,
+      ...values
     });
   }
 }
