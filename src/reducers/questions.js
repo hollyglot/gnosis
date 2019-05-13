@@ -1,15 +1,20 @@
-import Question from '../models/Question';
+import Question, {
+  QuestionOptions,
+  QUESTION_KEYS,
+} from '../models/Question';
 import BaseList, { toEntityList } from '../models/BaseList';
 
 import {
   QUESTIONS_LOADING,
   QUESTIONS_ERROR,
   QUESTIONS_SUCCESS,
+  QUESTIONS_SET_CURRENT,
 } from '../actions/questions';
 
 const initialState = new BaseList({
   loading: false,
   errorMessage: '',
+  options: new QuestionOptions(),
   data: toEntityList([], Question),
 });
 
@@ -31,6 +36,12 @@ const actionsMap = {
       loading: false,
       errorMessage: '',
       data: questions,
+    });
+  },
+  [QUESTIONS_SET_CURRENT]: (state, action) => {
+    const newOptions = state.options.set(`${ QUESTION_KEYS.CURRENT_QUESTION }`, action.questionPosition);
+    return state.merge({
+      options: newOptions,
     });
   },
 };

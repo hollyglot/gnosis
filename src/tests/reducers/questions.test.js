@@ -1,13 +1,17 @@
 /* global it, describe, expect */
 import reducer from '../../reducers/questions';
 import * as types from '../../actions/questions';
-import Question from '../../models/Question';
+import Question, {
+  QuestionOptions,
+  QUESTION_KEYS,
+}  from '../../models/Question';
 import BaseList, { toEntityList } from '../../models/BaseList';
 import { questionsData } from '../mock-data/questions';
 
 const initialState = new BaseList({
   loading: false,
   errorMessage: '',
+  options: new QuestionOptions(),
   data: toEntityList([], Question),
 });
 
@@ -43,6 +47,19 @@ describe('questions reducer', () => {
       reducer(initialState, {
         type: types.QUESTIONS_SUCCESS,
         data: questionsData,
+      }))
+      .toEqual(expectedState);
+  });
+
+  it('should handle dispatch of QUESTIONS_SET_CURRENT', () => {
+    const questionPosition = questionsData.length - 1;
+    const expectedState = initialState.merge({
+      options: initialState.options.set(`${ QUESTION_KEYS.CURRENT_QUESTION }`, questionPosition)
+    });
+    expect(
+      reducer(initialState, {
+        type: types.QUESTIONS_SET_CURRENT,
+        questionPosition,
       }))
       .toEqual(expectedState);
   });

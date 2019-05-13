@@ -3,6 +3,7 @@ import { asyncRequest } from '../api';
 export const QUESTIONS_LOADING = 'QUESTIONS_ASYNC_LOADING';
 export const QUESTIONS_ERROR = 'QUESTIONS_ASYNC_ERROR';
 export const QUESTIONS_SUCCESS = 'QUESTIONS_ASYNC_SUCCESS';
+export const QUESTIONS_SET_CURRENT = 'QUESTIONS_SET_CURRENT';
 
 function questionsLoading() {
   return {
@@ -21,6 +22,13 @@ function questionsSuccess(data) {
   return {
     type: QUESTIONS_SUCCESS,
     data,
+  };
+}
+
+export function setCurrentQuestion(questionPosition) {
+  return {
+    type: QUESTIONS_SET_CURRENT,
+    questionPosition,
   };
 }
 
