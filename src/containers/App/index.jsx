@@ -6,6 +6,7 @@ import teal from '@material-ui/core/colors/teal';
 import amber from '@material-ui/core/colors/amber';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
+import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
@@ -27,7 +28,6 @@ class App extends Component {
   render() {
     return (
       <div className="application">
-        <Quiz />
         <MuiThemeProvider theme={ theme }>
           <CssBaseline />
           <AppBar position="static" color="primary">
@@ -40,6 +40,13 @@ class App extends Component {
               </Typography>
             </Toolbar>
           </AppBar>
+          <Grid container spacing={ 16 }>
+            <Grid item xs={ 1 } md={ 2 } lg={ 3 } />
+             <Grid item xs={ 10 } md={ 8 } lg={ 6 }>
+               <Quiz />
+             </Grid>
+             <Grid item xs={ 1 } md={ 2 } lg={ 3 } />
+          </Grid>
         </MuiThemeProvider>
       </div>
     );
