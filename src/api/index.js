@@ -6,19 +6,15 @@ const asyncRequest = async (payload) => {
   const {
     path,
     method,
-    body,
-    header,
   } = payload;
 
-  const headers = { ...header };
-  headers['Content-Type'] = `${ defaultContentType }`;
-
-  const JSONbody = JSON.stringify(body);
+  const headers = {
+    'Content-Type': `${ defaultContentType }`
+  };
 
   const response = await fetch(`${ apiURl }/${ path }`, {
     method,
-    headers,
-    body: body ? JSONbody : undefined,
+    headers
   });
 
   if (response.status === 200) {
