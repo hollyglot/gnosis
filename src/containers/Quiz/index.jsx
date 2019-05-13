@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import './styles.css';
+import Typography from '@material-ui/core/Typography';
 
 import { getQuestions } from '../../actions/questions';
 
@@ -55,6 +57,10 @@ export class Quiz extends Component {
     const { loading } = this.props;
     return (
       <div className="quiz">
+        <Typography variant="h4" color="inherit">
+          Test your knowledge
+        </Typography>
+        <hr />
         { loading ? this.renderLoader()
           : this.renderQuestions()
         }
