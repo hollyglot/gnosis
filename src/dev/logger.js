@@ -1,5 +1,4 @@
 import { createLogger } from 'redux-logger';
-import { isCollection } from 'immutable';
 
 const logger = createLogger({
   // State transformer
@@ -9,13 +8,8 @@ const logger = createLogger({
     const newState = {};
 
     Object.keys(state).forEach((key) => {
-      const stateItem = state[key];;
-
-      if (isCollection(stateItem)) {
-        newState[key] = stateItem.toJS();
-      } else {
-        newState[key] = stateItem;
-      }
+      const stateItem = state[key];
+      newState[key] = stateItem.toJS();
     });
 
     return newState;

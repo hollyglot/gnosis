@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './styles.css';
+import Quiz from '../Quiz';
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
             Test your knowledge
           </h1>
         </header>
+        <Quiz />
       </div>
     );
   }
