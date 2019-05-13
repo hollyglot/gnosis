@@ -16,3 +16,14 @@ export default class Question extends Record(defaultValues, 'Question') {
     });
   }
 }
+
+/*
+  Constants and records to support Question Options
+*/
+export const QUESTION_KEYS = {
+  CURRENT_QUESTION: 'currentQuestion',
+};
+
+export const QuestionOptions = Record({
+  [QUESTION_KEYS.CURRENT_QUESTION]: 0,
+});
