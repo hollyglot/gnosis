@@ -6,7 +6,7 @@ const defaultValues = {
   data: new List(),
 };
 
-export default class BaseList extends Record(defaultValues, BaseList) {
+export default class BaseList extends Record(defaultValues, 'BaseList') {
   constructor(values) {
     super({
       ...values,

@@ -8,7 +8,7 @@ const defaultValues = {
   valid: false,
 };
 
-export default class Answer extends Record(defaultValues, Answer) {
+export default class Answer extends Record(defaultValues, 'Answer') {
   constructor(values) {
     super({
       ...values,
