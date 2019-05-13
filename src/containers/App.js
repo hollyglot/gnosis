@@ -3,11 +3,11 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="application">
+      <header className="application-header">
         {/*
           TODO: Add logo for gnosis
-        <img className="App-logo" alt="logo" />
+        <img className="application-logo" alt="logo" />
         }*/}
         <h1>
           Test your knowledge
