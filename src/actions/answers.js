@@ -30,7 +30,7 @@ export function checkAnswer(questionId, answer) {
     dispatch(answerLoading());
     try {
       const data = await asyncRequest({
-        path: `answers/${ questionId }`,
+        path: `answer/${ questionId }`,
         method: 'get',
       });
       dispatch(answerSuccess(data, answer));
