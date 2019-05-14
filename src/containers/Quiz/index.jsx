@@ -11,6 +11,7 @@ import { getQuestions, setCurrentQuestion } from '../../actions/questions';
 import AnswerValidation from '../../components/AnswerValidation';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import MultipleChoice from '../../components/MultipleChoice';
+import Score from '../../components/Score';
 import TextArea from '../../components/TextArea';
 import { QUESTION_KEYS } from '../../models/Question';
 
@@ -76,14 +77,27 @@ export class Quiz extends Component {
   }
 
   renderQuestions() {
-    const { questions, options } = this.props;
+    const { answers, questions, options } = this.props;
 
     if (questions.size === 0) {
       return "Unable to load questions at this time.";
     }
 
+
     const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
+    if (currentPosition === questions.size) {
+      const score = answers.reduce((amount, answer) => {
+        return amount + (answer.valid ? 1 : 0);
+      }, 0);
+      return (<div>
+        <Score score={ score } />
+      </div>);
+    }
     const currentQuestion = questions.get(currentPosition);
+
+    if (!currentQuestion) {
+      return "Unable to load questions at this time.";
+    }
 
     if (currentQuestion.choices.size) {
       return (<MultipleChoice question={ currentQuestion } />);
@@ -100,7 +114,7 @@ export class Quiz extends Component {
     if (questions.size) {
       const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
       const currentQuestion = questions.get(currentPosition);
-      currentAnswer = answers.get(currentQuestion.get('id'));
+      currentAnswer = currentQuestion ? answers.get(currentQuestion.get('id')) : undefined;
     }
 
     return (
