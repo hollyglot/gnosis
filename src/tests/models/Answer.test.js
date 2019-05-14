@@ -12,6 +12,7 @@ describe('Answer models', () => {
   it('should create a new Answer', () => {
     const result = new Answer(answerData);
     const expectedResult = new Answer(answerData);
+    expect(result).toBeInstanceOf(Answer);
     expect(result.get('questionId')).toEqual(expectedResult.get('questionId'));
   });
 });
