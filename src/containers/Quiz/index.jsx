@@ -7,10 +7,12 @@ import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import { clearAnswers } from '../../actions/answers';
 import { getQuestions, setCurrentQuestion } from '../../actions/questions';
 import AnswerValidation from '../../components/AnswerValidation';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import MultipleChoice from '../../components/MultipleChoice';
+import ResetQuiz from '../../components/ResetQuiz';
 import Score from '../../components/Score';
 import TextArea from '../../components/TextArea';
 import { QUESTION_KEYS } from '../../models/Question';
@@ -56,7 +58,7 @@ export class Quiz extends Component {
     const { answers } = this.props;
     const { answers: nextAnswers, checkingAnswer } = nextProps;
 
-    if (answers.size !== nextAnswers.size && !checkingAnswer) {
+    if ((nextAnswers.size !== 0) && (answers.size !== nextAnswers.size) && !checkingAnswer) {
       this.setState({ openDialog: true });
     }
   }
@@ -65,6 +67,12 @@ export class Quiz extends Component {
     const { dispatch, options } = this.props;
     const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
     dispatch(setCurrentQuestion(currentPosition + 1));
+  }
+
+  resetQuiz() {
+    const { dispatch } = this.props;
+    dispatch(clearAnswers());
+    dispatch(setCurrentQuestion(0));
   }
 
   closeDialog() {
@@ -91,6 +99,7 @@ export class Quiz extends Component {
       }, 0);
       return (<div>
         <Score score={ score } />
+        <ResetQuiz reset={ () => this.resetQuiz() }/>
       </div>);
     }
     const currentQuestion = questions.get(currentPosition);

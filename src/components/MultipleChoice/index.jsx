@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import uuidv4 from 'uuid/v4';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -64,15 +65,15 @@ class MultipleChoice extends Component {
 
   render() {
     const { checking, classes, question } = this.props;
-    const choices = question.choices;
+    const choices = question.get('choices');
 
     return (
       <div className='multiple-choice'>
         <Typography variant='h6' color='inherit'>
-          { question.question }
+          { question.get('question') }
         </Typography>
         <form className='flex-columns' noValidate autoComplete='off'>
-          <FormControl component="fieldset" className={ classes.formControl }>
+          <FormControl component="fieldset" className={ classes.formControl } style={{ marginTop: 12 }}>
             <RadioGroup
               aria-label="multiple choice"
               name="multiple-choice"
@@ -81,7 +82,9 @@ class MultipleChoice extends Component {
               onChange={ this.handleChange }
             >
               { choices.map((choice) => {
-                  return (<FormControlLabel value={ choice } control={<Radio color="secondary" />} label={ choice } />);
+                  return (<FormControlLabel key={ uuidv4() } value={ choice }
+                    control={<Radio color="primary" style={{ paddingTop: 6, paddingBottom: 6 }} />}
+                    label={ choice } />);
                 })
               }
             </RadioGroup>

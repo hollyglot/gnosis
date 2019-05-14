@@ -61,7 +61,7 @@ class TextArea extends Component {
     return (
       <div className='text-area'>
         <Typography variant='h6' color='inherit'>
-          { question.question }
+          { question.get('question') }
         </Typography>
         <form className='flex-columns' noValidate autoComplete='off'>
           <TextField
