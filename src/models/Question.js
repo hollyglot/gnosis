@@ -1,4 +1,5 @@
 import { List, Record } from 'immutable';
+import { shuffleArray } from '../utilities/shuffle';
 
 const defaultValues = {
   id: null,
@@ -12,7 +13,7 @@ export default class Question extends Record(defaultValues, 'Question') {
     super({
       ...values,
       choices: values && values.choices ?
-        List(values.choices) : defaultValues.choices,
+        List(shuffleArray(values.choices)) : defaultValues.choices,
     });
   }
 }
