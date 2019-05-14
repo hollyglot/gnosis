@@ -6,6 +6,7 @@ import './styles.css';
 import Typography from '@material-ui/core/Typography';
 
 import { getQuestions } from '../../actions/questions';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const mapStateToProps = state => {
   return {
@@ -33,7 +34,7 @@ export class Quiz extends Component {
   }
 
   renderLoader() {
-    return "LOADING...";
+    return (<LoadingIndicator />);
   }
 
   renderQuestions() {
