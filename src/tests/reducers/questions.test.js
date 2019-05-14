@@ -6,7 +6,7 @@ import Question, {
   QUESTION_KEYS,
 }  from '../../models/Question';
 import BaseList, { toEntityList } from '../../models/BaseList';
-import { questionsData } from '../mock-data/questions';
+import { questionData, questionsData } from '../mock-data/questions';
 
 const initialState = new BaseList({
   loading: false,
@@ -40,15 +40,11 @@ describe('questions reducer', () => {
   });
 
   it('should handle dispatch of QUESTIONS_SUCCESS', () => {
-    const expectedState = initialState.merge({
-      data: toEntityList(questionsData, Question),
+    const updatedState = reducer(initialState, {
+      type: types.QUESTIONS_SUCCESS,
+      data: questionsData,
     });
-    expect(
-      reducer(initialState, {
-        type: types.QUESTIONS_SUCCESS,
-        data: questionsData,
-      }))
-      .toEqual(expectedState);
+    expect(updatedState.get('data').size).toEqual(questionsData.length);
   });
 
   it('should handle dispatch of QUESTIONS_SET_CURRENT', () => {

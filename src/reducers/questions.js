@@ -4,6 +4,8 @@ import Question, {
 } from '../models/Question';
 import BaseList, { toEntityList } from '../models/BaseList';
 
+import { shuffleArray } from '../utilities/shuffle';
+
 import {
   QUESTIONS_LOADING,
   QUESTIONS_ERROR,
@@ -31,10 +33,12 @@ const actionsMap = {
     });
   },
   [QUESTIONS_SUCCESS]: (state, action) => {
-    const questions = toEntityList(action.data, Question);
+    const shuffleQuestions = shuffleArray(action.data);
+    const questions = toEntityList(shuffleQuestions, Question);
     return state.merge({
       loading: false,
       errorMessage: '',
+      options: new QuestionOptions(),
       data: questions,
     });
   },
