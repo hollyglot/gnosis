@@ -23,7 +23,7 @@ const actionsMap = {
   },
   [ANSWER_SUCCESS]: (state, action) => {
     const apiAnswer = action.data;
-    const answerIsValid = apiAnswer.answer === action.answer.trim();
+    const answerIsValid = apiAnswer.answer.toLowerCase() === action.answer.toLowerCase().trim();
     const answer = new Answer({
         questionId: apiAnswer.id,
         answer: action.answer,

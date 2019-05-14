@@ -36,9 +36,13 @@ class TextArea extends Component {
     classes: PropTypes.object.isRequired,
   }
 
-  state = {
-   value: '',
- };
+  constructor() {
+    super();
+
+    this.state = {
+      value: '',
+    };
+  }
 
   handleChange = name => event => {
     this.setState({
