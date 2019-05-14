@@ -43,7 +43,7 @@ export function getQuestions() {
       dispatch(questionsSuccess(data));
       return data;
     } catch (error) {
-      dispatch(questionsError(error));
+      dispatch(questionsError(error.message));
       return null;
     }
   };

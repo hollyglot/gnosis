@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { clearAnswers } from '../../actions/answers';
 import { getQuestions, setCurrentQuestion } from '../../actions/questions';
 import AnswerValidation from '../../components/AnswerValidation';
+import ErrorMessage from '../../components/ErrorMessage';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import MultipleChoice from '../../components/MultipleChoice';
 import ResetQuiz from '../../components/ResetQuiz';
@@ -20,9 +21,11 @@ import { QUESTION_KEYS } from '../../models/Question';
 const mapStateToProps = state => {
   return {
     questions: state.questions.get('data'),
+    questionsError: state.questions.get('errorMessage'),
+    questionsOptions: state.questions.get('options'),
     answers: state.answers.get('data'),
+    answersError: state.answers.get('errorMessage'),
     checkingAnswer: state.answers.get('loading'),
-    options: state.questions.get('options'),
     loading: state.questions.get('loading'),
   };
 };
@@ -36,7 +39,10 @@ const mapDispatchToProps = dispatch => {
 export class Quiz extends Component {
   static propTypes = {
     questions: PropTypes.object.isRequired,
-    options: PropTypes.object.isRequired,
+    questionsOptions: PropTypes.object.isRequired,
+    questionsError: PropTypes.string.isRequired,
+    answers: PropTypes.object.isRequired,
+    answersError: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
   }
@@ -46,6 +52,7 @@ export class Quiz extends Component {
 
     this.state = {
       openDialog: false,
+      previousAnswer: null,
     };
   }
 
@@ -55,8 +62,19 @@ export class Quiz extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { answers } = this.props;
-    const { answers: nextAnswers, checkingAnswer } = nextProps;
+    const { answers, questions, questionsOptions } = this.props;
+    const { answers: nextAnswers, checkingAnswer, questionsOptions: nextOptions } = nextProps;
+
+    const questionChange = questionsOptions.get(QUESTION_KEYS.CURRENT_QUESTION) !== nextOptions.get(QUESTION_KEYS.CURRENT_QUESTION);
+
+    if (questionChange) {
+      const prevPosition = questionsOptions.get(QUESTION_KEYS.CURRENT_QUESTION);
+      const prevQuestion = questions.get(prevPosition);
+      const prevAnswer = prevQuestion ? answers.get(prevQuestion.get('id')) : null;
+      if (prevAnswer) {
+        this.setState({ previousAnswer: prevAnswer });
+      }
+    }
 
     if ((nextAnswers.size !== 0) && (answers.size !== nextAnswers.size) && !checkingAnswer) {
       this.setState({ openDialog: true });
@@ -64,8 +82,8 @@ export class Quiz extends Component {
   }
 
   getNextQuestion() {
-    const { dispatch, options } = this.props;
-    const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
+    const { dispatch, questionsOptions } = this.props;
+    const currentPosition = questionsOptions.get(QUESTION_KEYS.CURRENT_QUESTION);
     dispatch(setCurrentQuestion(currentPosition + 1));
   }
 
@@ -85,14 +103,18 @@ export class Quiz extends Component {
   }
 
   renderQuestions() {
-    const { answers, questions, options } = this.props;
+    const { answers, questions, questionsError, questionsOptions } = this.props;
 
+    const errorMessage = "Unable to load questions at this time.";
+    if (questionsError.length) {
+      return (<ErrorMessage message={ errorMessage } />);
+    }
     if (questions.size === 0) {
-      return "Unable to load questions at this time.";
+      return (<ErrorMessage message={ errorMessage } />);
     }
 
 
-    const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
+    const currentPosition = questionsOptions.get(QUESTION_KEYS.CURRENT_QUESTION);
     if (currentPosition === questions.size) {
       const score = answers.reduce((amount, answer) => {
         return amount + (answer.valid ? 1 : 0);
@@ -104,10 +126,6 @@ export class Quiz extends Component {
     }
     const currentQuestion = questions.get(currentPosition);
 
-    if (!currentQuestion) {
-      return "Unable to load questions at this time.";
-    }
-
     if (currentQuestion.choices.size) {
       return (<MultipleChoice question={ currentQuestion } />);
     }
@@ -116,14 +134,15 @@ export class Quiz extends Component {
   }
 
   render() {
-    const { answers, loading, options, questions } = this.props;
-    const { openDialog } =  this.state;
+    const { answers, answersError, loading, questions, questionsOptions } = this.props;
+    const { openDialog, previousAnswer } =  this.state;
 
     let currentAnswer;
     if (questions.size) {
-      const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
+      const currentPosition = questionsOptions.get(QUESTION_KEYS.CURRENT_QUESTION);
       const currentQuestion = questions.get(currentPosition);
-      currentAnswer = currentQuestion ? answers.get(currentQuestion.get('id')) : undefined;
+      const answer = currentQuestion ? answers.get(currentQuestion.get('id')) : null;
+      currentAnswer = answer || previousAnswer;
     }
 
     return (
@@ -140,12 +159,16 @@ export class Quiz extends Component {
           <hr />
         </Grid>
         <Grid item xs={ 12 } md={ 12 } lg={ 12 }>
+          { answersError.length ?
+            (<ErrorMessage message='An unexpected error has occurred.' />)
+            :  null
+          }
           { loading ? this.renderLoader()
             : this.renderQuestions()
           }
           <Dialog open={ openDialog } onClose={ () => this.closeDialog() }>
             <AnswerValidation
-              valid={ currentAnswer ? currentAnswer.valid : false }
+              valid={ currentAnswer ? currentAnswer.get('valid') : false }
               closeDialog={ () => this.closeDialog() }
             />
           </Dialog>

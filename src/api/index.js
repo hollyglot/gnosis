@@ -22,7 +22,7 @@ const asyncRequest = async (payload) => {
     return responseBody;
   }
 
-  throw Error('An unexpected error has occured.');
+  throw Error('An unexpected error has occurred.');
 };
 
 export {
