@@ -16,11 +16,13 @@ const theme = createMuiTheme({
     primary: teal,
     secondary: amber,
   },
+  spacing: 8,
   typography: {
     fontFamily: [
       'Nanum Gothic',
       'serif',
     ].join(','),
+    useNextVariants: true,
   },
 });
 
@@ -32,20 +34,22 @@ class App extends Component {
           <CssBaseline />
           <AppBar position="static" color="primary">
             <Toolbar>
-              <Typography variant="h2" color="inherit">
-                γνῶσις
+              <div className='flex-columns'>
+                <Typography variant="h2" color="inherit">
+                  γνῶσις
+                </Typography>
                 <Typography variant="subtitle1" color="inherit">
                   <span className='italicize'>gnōsis</span> | knowledge
                 </Typography>
-              </Typography>
+              </div>
             </Toolbar>
           </AppBar>
-          <Grid container spacing={ 16 }>
+          <Grid container spacing={ 0 }>
             <Grid item xs={ 1 } md={ 2 } lg={ 3 } />
-             <Grid item xs={ 10 } md={ 8 } lg={ 6 }>
-               <Quiz />
-             </Grid>
-             <Grid item xs={ 1 } md={ 2 } lg={ 3 } />
+            <Grid item xs={ 10 } md={ 8 } lg={ 6 }>
+              <Quiz />
+            </Grid>
+            <Grid item xs={ 1 } md={ 2 } lg={ 3 } />
           </Grid>
         </MuiThemeProvider>
       </div>
