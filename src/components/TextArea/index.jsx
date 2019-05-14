@@ -43,6 +43,14 @@ class TextArea extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { question } = this.props;
+    const { question: nextQuestion } = nextProps;
+    if (question !== nextQuestion) {
+      this.setState({ value: '' });
+    }
+  }
+
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
