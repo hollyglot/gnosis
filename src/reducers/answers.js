@@ -5,6 +5,7 @@ import {
   ANSWER_LOADING,
   ANSWER_ERROR,
   ANSWER_SUCCESS,
+  ANSWERS_CLEAR,
 } from '../actions/answers';
 
 const initialState = new BaseMap();
@@ -35,6 +36,9 @@ const actionsMap = {
       errorMessage: '',
       data: updatedAnswers,
     });
+  },
+  [ANSWERS_CLEAR]: (state, action) => {
+    return state.merge(initialState);
   },
 };
 

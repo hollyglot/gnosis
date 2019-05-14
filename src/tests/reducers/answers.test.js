@@ -51,4 +51,19 @@ describe('answers reducer', () => {
       reducerState.getIn(['data', questionId, 'questionId']))
       .toEqual(expectedState.getIn(['data', questionId, 'questionId']));
   });
+
+  it('should handle dispatch of ANSWERS_CLEAR', () => {
+    const questionId = answerResponse.id;
+    let answerMap = new Map();
+    answerMap = answerMap.set(questionId, new Answer(answerData));
+    const loadedState = initialState.merge({
+      data: answerMap,
+    });
+
+    expect(
+      reducer(loadedState, {
+        type: types.ANSWERS_CLEAR,
+      }))
+      .toEqual(initialState);
+  });
 });

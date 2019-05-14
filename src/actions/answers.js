@@ -3,6 +3,7 @@ import { asyncRequest } from '../api';
 export const ANSWER_LOADING = 'ANSWER_ASYNC_LOADING';
 export const ANSWER_ERROR = 'ANSWER_ASYNC_ERROR';
 export const ANSWER_SUCCESS = 'ANSWER_ASYNC_SUCCESS';
+export const ANSWERS_CLEAR = 'ANSWERS_CLEAR';
 
 function answerLoading() {
   return {
@@ -22,6 +23,12 @@ function answerSuccess(data, answer) {
     type: ANSWER_SUCCESS,
     data,
     answer
+  };
+}
+
+export function clearAnswers(data, answer) {
+  return {
+    type: ANSWERS_CLEAR,
   };
 }
 
