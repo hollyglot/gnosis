@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import './styles.css';
+import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import { getQuestions, setCurrentQuestion } from '../../actions/questions';
+import AnswerValidation from '../../components/AnswerValidation';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import TextArea from '../../components/TextArea';
 import { QUESTION_KEYS } from '../../models/Question';
@@ -14,6 +16,8 @@ import { QUESTION_KEYS } from '../../models/Question';
 const mapStateToProps = state => {
   return {
     questions: state.questions.get('data'),
+    answers: state.answers.get('data'),
+    checkingAnswer: state.answers.get('loading'),
     options: state.questions.get('options'),
     loading: state.questions.get('loading'),
   };
@@ -33,10 +37,31 @@ export class Quiz extends Component {
     dispatch: PropTypes.func.isRequired,
   }
 
+  constructor() {
+    super();
+
+    this.state = {
+      openDialog: false,
+    };
+  }
+
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(getQuestions());
   }
+
+  componentWillReceiveProps(nextProps) {
+    const { answers } = this.props;
+    const { answers: nextAnswers, checkingAnswer } = nextProps;
+
+    if (answers.size !== nextAnswers.size && !checkingAnswer) {
+      this.setState({ openDialog: true });
+    }
+  }
+
+  closeDialog = () => {
+   this.setState({ openDialog: false });
+ };
 
   renderLoader() {
     return (<LoadingIndicator />);
@@ -62,7 +87,16 @@ export class Quiz extends Component {
   }
 
   render() {
-    const { loading } = this.props;
+    const { answers, loading, options, questions } = this.props;
+    const { openDialog } =  this.state;
+
+    let currentAnswer;
+    if (questions.size) {
+      const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
+      const currentQuestion = questions.get(currentPosition);
+      currentAnswer = answers.get(currentQuestion.get('id'));
+    }
+
     return (
       <Grid container
         direction="row"
@@ -80,6 +114,12 @@ export class Quiz extends Component {
           { loading ? this.renderLoader()
             : this.renderQuestions()
           }
+          <Dialog open={ openDialog } onClose={ this.closeDialog }>
+            <AnswerValidation
+              valid={ currentAnswer ? currentAnswer.valid : false }
+              closeDialog={ this.closeDialog }
+            />
+          </Dialog>
         </Grid>
       </Grid>
     );
