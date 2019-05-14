@@ -8,7 +8,7 @@ import teal from '@material-ui/core/colors/teal';
 function AnswerValidation(props) {
   const { classes, closeDialog, valid } = props;
   const color = valid ? teal[800] : red[700];
-  const width = window.innerWidth > 400 ? 400 : '100%';
+  const width = window.innerWidth > 520 ? 400 : '100%';
 
   return (
     <div className='answer-notification' style={{ padding: 30, textAlign: 'center', width }}>
@@ -45,7 +45,6 @@ function AnswerValidation(props) {
 }
 
 AnswerValidation.propTypes = {
-  classes: PropTypes.object.isRequired,
   closeDialog: PropTypes.func.isRequired,
   valid: PropTypes.bool
 };

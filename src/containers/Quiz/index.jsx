@@ -59,9 +59,16 @@ export class Quiz extends Component {
     }
   }
 
-  closeDialog = () => {
-   this.setState({ openDialog: false });
- };
+  getNextQuestion() {
+    const { dispatch, options, questions } = this.props;
+    const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
+    dispatch(setCurrentQuestion(currentPosition + 1));
+  }
+
+  closeDialog() {
+    this.setState({ openDialog: false });
+    this.getNextQuestion();
+  };
 
   renderLoader() {
     return (<LoadingIndicator />);
@@ -114,10 +121,10 @@ export class Quiz extends Component {
           { loading ? this.renderLoader()
             : this.renderQuestions()
           }
-          <Dialog open={ openDialog } onClose={ this.closeDialog }>
+          <Dialog open={ openDialog } onClose={ () => this.closeDialog() }>
             <AnswerValidation
               valid={ currentAnswer ? currentAnswer.valid : false }
-              closeDialog={ this.closeDialog }
+              closeDialog={ () => this.closeDialog() }
             />
           </Dialog>
         </Grid>
