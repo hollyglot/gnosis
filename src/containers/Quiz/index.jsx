@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { getQuestions, setCurrentQuestion } from '../../actions/questions';
 import AnswerValidation from '../../components/AnswerValidation';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import MultipleChoice from '../../components/MultipleChoice';
 import TextArea from '../../components/TextArea';
 import { QUESTION_KEYS } from '../../models/Question';
 
@@ -60,7 +61,7 @@ export class Quiz extends Component {
   }
 
   getNextQuestion() {
-    const { dispatch, options, questions } = this.props;
+    const { dispatch, options } = this.props;
     const currentPosition = options.get(QUESTION_KEYS.CURRENT_QUESTION);
     dispatch(setCurrentQuestion(currentPosition + 1));
   }
@@ -85,9 +86,7 @@ export class Quiz extends Component {
     const currentQuestion = questions.get(currentPosition);
 
     if (currentQuestion.choices.size) {
-      return (<Typography variant="h6" color="inherit">
-        so many choices...
-      </Typography>);
+      return (<MultipleChoice question={ currentQuestion } />);
     }
 
     return (<TextArea question={ currentQuestion } />);
