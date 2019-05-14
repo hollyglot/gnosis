@@ -72,7 +72,7 @@ export class Quiz extends Component {
   resetQuiz() {
     const { dispatch } = this.props;
     dispatch(clearAnswers());
-    dispatch(setCurrentQuestion(0));
+    dispatch(getQuestions());
   }
 
   closeDialog() {
