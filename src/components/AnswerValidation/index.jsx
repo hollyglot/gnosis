@@ -6,7 +6,7 @@ import red from '@material-ui/core/colors/red';
 import teal from '@material-ui/core/colors/teal';
 
 function AnswerValidation(props) {
-  const { classes, closeDialog, valid } = props;
+  const { closeDialog, valid } = props;
   const color = valid ? teal[800] : red[700];
   const width = window.innerWidth > 520 ? 400 : '100%';
 

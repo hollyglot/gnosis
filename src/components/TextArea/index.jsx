@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import './styles.css';
-import Button from '@material-ui/core/Button';
+
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+
+import SubmitAnswer from '../SubmitAnswer';
 import { checkAnswer } from '../../actions/answers';
 
 const mapStateToProps = state => {
   return {
-    answers: state.answers.get('data'),
     checking: state.answers.get('loading')
   };
 };
@@ -30,7 +30,6 @@ const styles = theme => ({
 
 class TextArea extends Component {
   static propTypes = {
-    answers: PropTypes.object.isRequired,
     question: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
@@ -58,7 +57,6 @@ class TextArea extends Component {
 
   render() {
     const { checking, classes, question } = this.props;
-    const { value } = this.state;
 
     return (
       <div className='text-area'>
@@ -79,15 +77,10 @@ class TextArea extends Component {
             value={ this.state.value }
             onChange={ this.handleChange('value') }
           />
-          <Button
+          <SubmitAnswer
             disabled={ checking }
-            color="secondary"
-            size='medium'
-            variant="contained"
-            onClick={ () => this.submitAnswer() }
-          >
-            Check my answer!
-          </Button>
+            onSubmit={ () => this.submitAnswer() }
+          />
         </form>
       </div>
     );
