@@ -4,6 +4,8 @@
 ---
 This is a quiz app created for Futurice. It was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+See the app live: [gnosis](http://gnosis-quiz.herokuapp.com/)
+
 ## Available Scripts
 
 In the project directory, you can run:
